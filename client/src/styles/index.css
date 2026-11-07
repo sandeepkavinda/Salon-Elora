@@ -1,0 +1,210 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ivory: #f8f5ef;
+  --color-champagne: #e9ddcb;
+  --color-taupe: #b7a58d;
+  --color-gold: #c5a46d;
+  --color-espresso: #302820;
+  --color-white: #ffffff;
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ivory);
+    color: var(--color-espresso);
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-espresso);
+  }
+  :focus-visible {
+    outline: 1px solid var(--color-gold);
+    outline-offset: 4px;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1520px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4.2vw, 4.5rem);
+  }
+  .section {
+    padding-block: clamp(5rem, 11vw, 11rem);
+  }
+  .label {
+    font-size: 0.72rem;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+  }
+  .display em {
+    font-style: italic;
+    font-weight: 300;
+  }
+  .display-xl {
+    font-size: clamp(3.5rem, 11.5vw, 11.5rem);
+    line-height: 0.92;
+  }
+  .display-lg {
+    font-size: clamp(2.9rem, 7.2vw, 7.2rem);
+    line-height: 0.98;
+  }
+  .display-md {
+    font-size: clamp(2.2rem, 4.6vw, 4.6rem);
+    line-height: 1.04;
+  }
+  .display-sm {
+    font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+    line-height: 1.15;
+  }
+  .lead {
+    font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+    line-height: 1.75;
+    opacity: 0.78;
+  }
+  .hairline {
+    height: 1px;
+    background: currentColor;
+    opacity: 0.18;
+  }
+  .gold-line {
+    height: 1px;
+    background: var(--color-gold);
+    transform-origin: left center;
+  }
+  /* image mask lines produced by SplitText must not clip descenders */
+  .split-mask {
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.7s var(--ease-expo);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+/* Form fields */
+.field {
+  position: relative;
+}
+.field input,
+.field textarea {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(48, 40, 32, 0.28);
+  padding: 1.6rem 0 0.7rem;
+  font: inherit;
+  color: inherit;
+  border-radius: 0;
+  transition: border-color 0.5s var(--ease-expo);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 8.5rem;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+.field label {
+  position: absolute;
+  left: 0;
+  top: 1.55rem;
+  pointer-events: none;
+  font-size: 1rem;
+  opacity: 0.6;
+  transform-origin: left top;
+  transition: transform 0.5s var(--ease-expo), opacity 0.5s;
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field textarea:focus + label,
+.field textarea:not(:placeholder-shown) + label {
+  transform: translateY(-1.3rem) scale(0.72);
+  opacity: 0.85;
+  letter-spacing: 0.06em;
+}
+.field[data-invalid='true'] input,
+.field[data-invalid='true'] textarea {
+  border-color: #9c4a3c;
+}
+
+/* Map tone harmonised with the palette */
+.map-frame {
+  filter: grayscale(0.85) sepia(0.28) contrast(0.95) brightness(1.02);
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-101%);
+  }
+  55%,
+  100% {
+    transform: translateY(101%);
+  }
+}
+.scroll-cue::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold);
+  animation: scroll-cue 2.2s var(--ease-expo) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
